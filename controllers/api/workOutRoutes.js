@@ -68,7 +68,14 @@ router.get('/range', async (req, res) => {
 
 router.post('/',  async (req, res) => {
     try{
-       
+        // const response = await Workout.insert({});
+        // console.log(response)
+        // if (error) {
+        //     res.send(error);
+        // }
+        // if (response) {
+        //     res.send(response);
+        // }
         await Workout.insertMany({}, (error, data) => {
             if (error) {
                 res.send(error);
