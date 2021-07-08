@@ -3,23 +3,28 @@ const router = require('express').Router();
 const {Workout} = require('../../models');
 
 router.get('/', async (req, res) => {
-    await Workout.find({}, (error, data) => {
-        if (error) {
-            res.send(error);
-          } else {
-            Workout.aggregate([{
-                $addFields: {
-                    "totalDuration": {$sum: "$exercises.duration"}
-                }
-            }], (error, data) => {
-                if (error) {
-                    res.send(error);
-                } else {
-                    res.send(data);
-                }
-            })
-        }
-    })
+    try {
+        await Workout.find({}, (error, data) => {
+            if (error) {
+                res.send(error);
+              } else {
+                Workout.aggregate([{
+                    $addFields: {
+                        "totalDuration": {$sum: "$exercises.duration"}
+                    }
+                }], (error, data) => {
+                    if (error) {
+                        res.send(error);
+                    } else {
+                        res.send(data);
+                    }
+                })
+            }
+        })
+
+    } catch (error) {
+        console.error(error);
+    }
 
 });
 
@@ -73,8 +78,8 @@ router.post('/', async (req, res) => {
                 res.send(data)
             }
         })
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.error(error);
     }
 });
 
