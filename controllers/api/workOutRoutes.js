@@ -1,4 +1,96 @@
 const router = require('express').Router();
-const { WorkOut } = require('../../models');
+
+const {Workout} = require('../../models');
+
+router.get('/', async (req, res) => {
+    await Workout.find({}, (error, data) => {
+        if (error) {
+            res.send(error);
+          } else {
+            Workout.aggregate([{
+                $addFields: {
+                    "totalDuration": {$sum: "$exercises.duration"}
+                }
+            }], (error, data) => {
+                if (error) {
+                    res.send(error);
+                } else {
+                    res.send(data);
+                }
+            })
+        }
+    })
+
+});
+
+router.get('/range', async (req, res) => {
+    const response = await Workout.find({}).limit(4);
+    
+    console.log(response)
+    if (response) {
+        Workout.aggregate([{
+            $addFields: {
+                "totalDuration": {$sum: "$exercises.duration"}
+            }
+        }], (error, data) => {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send(data);
+            }
+        })
+    }
+
+    // await Workout.find({},(error, data) => {
+    //     if (error) {
+    //         res.send(error);
+    //       } else {
+    //         Workout.aggregate([{
+    //             $addFields: {
+    //                 "totalDuration": {$sum: "$exercises.duration"}
+    //             }
+    //         }], (error, data) => {
+    //             if (error) {
+    //                 res.send(error);
+    //             } else {
+    //                 res.send(data);
+    //             }
+    //         })
+    //     }
+    // }).limit(7);
+
+});
+
+router.post('/', async (req, res) => {
+    try{
+       
+        await Workout.insertMany({}, (error, data) => {
+            if (error) {
+                res.send(error);
+              } else {
+                // ------------------------ set url so that _id is added at the end
+                console.log(data)
+                res.send(data)
+            }
+        })
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    console.log(req.body)
+    await Workout.updateOne({
+        _id : req.params.id
+    },
+    {$addToSet: {exercises : (req.body)}
+    }, (error, data) => {
+            if (error) {
+                res.send(error);
+              } else {
+                res.send(data);
+            }
+    })
+});
 
 module.exports = router;
