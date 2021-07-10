@@ -45,42 +45,15 @@ router.get('/range', async (req, res) => {
             }
         })
     }
-
-    // await Workout.find({},(error, data) => {
-    //     if (error) {
-    //         res.send(error);
-    //       } else {
-    //         Workout.aggregate([{
-    //             $addFields: {
-    //                 "totalDuration": {$sum: "$exercises.duration"}
-    //             }
-    //         }], (error, data) => {
-    //             if (error) {
-    //                 res.send(error);
-    //             } else {
-    //                 res.send(data);
-    //             }
-    //         })
-    //     }
-    // }).limit(7);
-
 });
 
 router.post('/',  async (req, res) => {
     try{
-        // const response = await Workout.insert({});
-        // console.log(response)
-        // if (error) {
-        //     res.send(error);
-        // }
-        // if (response) {
-        //     res.send(response);
-        // }
         await Workout.insertMany({}, (error, data) => {
             if (error) {
                 res.send(error);
               } else {
-                // ------------------------ set url so that _id is added at the end
+               
                 console.log(data)
                 res.send(data)
             }
