@@ -47,9 +47,9 @@ router.get('/range', async (req, res) => {
     }
 });
 
-router.post('/',  async (req, res) => {
+router.post('/',  async ({ body = {} }, res) => {
     try{
-        await Workout.insertMany({}, (error, data) => {
+        await Workout.create((body), (error, data) => {
             if (error) {
                 res.send(error);
               } else {
