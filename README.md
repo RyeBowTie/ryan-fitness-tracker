@@ -1,5 +1,8 @@
 # ryan-fitness-tracker
 
+https://fitness-tracker-ryan.herokuapp.com/
+https://github.com/RyeBowTie/ryan-fitness-tracker
+
 # Description
 
 A fitness tracker application that allows users to create workouts, add exercises to those workouts, and see visualizations of the data from those workouts. 
